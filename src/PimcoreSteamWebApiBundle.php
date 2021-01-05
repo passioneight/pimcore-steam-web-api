@@ -1,6 +1,6 @@
 <?php
 
-namespace Passioneight\Bundle\BundleTemplateBundle;
+namespace Passioneight\Bundle\PimcoreSteamWebApiBundle;
 
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
 
