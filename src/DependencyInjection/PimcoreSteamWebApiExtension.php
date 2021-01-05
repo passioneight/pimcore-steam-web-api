@@ -1,14 +1,14 @@
 <?php
 
-namespace Passioneight\Bundle\BundleTemplateBundle\DependencyInjection;
+namespace Passioneight\Bundle\PimcoreSteamWebApiBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\HttpKernel\DependencyInjection\ConfigurableExtension;
-use Passioneight\Bundle\BundleTemplateBundle\Constant\Configuration as Config;
+use Passioneight\Bundle\PimcoreSteamWebApiBundle\Constant\Configuration as Config;
 
-class BundleTemplateExtension extends ConfigurableExtension
+class PimcoreSteamWebApiExtension extends ConfigurableExtension
 {
     /**
      * @inheritDoc

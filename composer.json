@@ -1,16 +1,19 @@
 {
-  "name": "passioneight/bundle-template",
+  "name": "passioneight/pimcore-steam-web-api",
   "type": "pimcore-bundle",
   "license": "GPL-3.0",
   "autoload": {
     "psr-4": {
-      "Passioneight\\Bundle\\BundleTemplateBundle\\": "src/"
+      "Passioneight\\Bundle\\PimcoreSteamWebApiBundle\\": "src/"
     }
+  },
+  "require": {
+    "passioneight/php-utilities": "^1.0"
   },
   "extra": {
     "pimcore": {
       "bundles": [
-        "Passioneight\\Bundle\\BundleTemplateBundle\\BundleTemplateBundle"
+        "Passioneight\\Bundle\\PimcoreSteamWebApiBundle\\PimcoreSteamWebApiBundle"
       ]
     }
   }

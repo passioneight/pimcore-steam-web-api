@@ -4,6 +4,6 @@ namespace Passioneight\Bundle\BundleTemplateBundle;
 
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
 
-class BundleTemplateBundle extends AbstractPimcoreBundle
+class PimcoreSteamWebApiBundle extends AbstractPimcoreBundle
 {
 }

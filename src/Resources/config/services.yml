@@ -2,8 +2,8 @@ services:
     _defaults:
         autowire: true
         autoconfigure: true
-        public: true
 
-#    Passioneight\Bundle\BundleTemplateBundle\Controller\:
-#        resource: '../../Controller'
-#        tags: ['controller.service_arguments']
+    # Controllers
+    Passioneight\Bundle\PimcoreSteamWebApiBundle\Controller\:
+        resource: '../../Controller'
+        tags: ['controller.service_arguments']

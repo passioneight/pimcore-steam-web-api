@@ -1,8 +1,8 @@
 <?php
 
-namespace Passioneight\Bundle\BundleTemplateBundle\Constant;
+namespace Passioneight\Bundle\PimcoreSteamWebApiBundle\Constant;
 
 class Configuration
 {
-    const ROOT = "bundle_template";
+    const ROOT = "pimcore_steam_web_api";
 }

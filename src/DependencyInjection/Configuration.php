@@ -1,8 +1,8 @@
 <?php
 
-namespace Passioneight\Bundle\BundleTemplateBundle\DependencyInjection;
+namespace Passioneight\Bundle\PimcoreSteamWebApiBundle\DependencyInjection;
 
-use Passioneight\Bundle\BundleTemplateBundle\Constant\Configuration as Config;
+use Passioneight\Bundle\PimcoreSteamWebApiBundle\Constant\Configuration as Config;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
