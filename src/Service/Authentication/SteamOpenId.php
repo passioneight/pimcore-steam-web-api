@@ -1,11 +1,12 @@
 <?php
 
-namespace Passioneight\Bundle\PimcoreSteamWebApiBundle\Service;
+namespace Passioneight\Bundle\PimcoreSteamWebApiBundle\Service\Authentication;
 
 use Passioneight\Bundle\PhpUtilitiesBundle\Service\Utility\UrlUtility;
 use Passioneight\Bundle\PimcoreSteamWebApiBundle\Constant\OpenIdMode;
 use Passioneight\Bundle\PimcoreSteamWebApiBundle\Constant\OpenIdParameter;
 use Pimcore\Tool;
+use Symfony\Component\HttpFoundation\Request;
 
 class SteamOpenId
 {
@@ -43,6 +44,36 @@ class SteamOpenId
         $query = http_build_query(array_merge($config, $parameters));
 
         return UrlUtility::appendToUrl($this->getLoginUrl(), $query);
+    }
+
+    /**
+     * @todo: move this to a different service
+     * @param Request $request
+     * @return string|null
+     */
+    public function getSteamId(Request $request): ?string
+    {
+        return UrlUtility::getEndpointFromUrl($this->getIdentity($request));
+    }
+
+    /**
+     * @param Request $request
+     * @return string|null
+     */
+    public function getIdentity(Request $request): ?string
+    {
+        return $request->get($this->convertParameterToSymfonyFormat(OpenIdParameter::IDENTITY));
+    }
+
+    /**
+     * @param string $parameter
+     * @param string $openIdDelimiter
+     * @param string $symfonyDelimiter
+     * @return string
+     */
+    public function convertParameterToSymfonyFormat(string $parameter, string $openIdDelimiter = ".", string $symfonyDelimiter = "_"): string
+    {
+        return str_replace($openIdDelimiter, $symfonyDelimiter, $parameter);
     }
 
     /**

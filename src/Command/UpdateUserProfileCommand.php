@@ -3,11 +3,14 @@
 namespace Passioneight\Bundle\PimcoreSteamWebApiBundle\Command;
 
 use Passioneight\Bundle\PhpUtilitiesBundle\Service\Utility\NamespaceUtility;
+use Passioneight\Bundle\PimcoreSteamWebApiBundle\Model\Entity\DataObject\SteamUserInterface;
+use Passioneight\Bundle\PimcoreSteamWebApiBundle\Service\Api\SteamWebApiService;
 use Pimcore\Console\AbstractCommand as PimcoreCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Pimcore\Model\Listing\AbstractListing;
+use Symfony\Component\HttpFoundation\Response;
 
 class UpdateUserProfileCommand extends PimcoreCommand
 {
@@ -18,6 +21,7 @@ class UpdateUserProfileCommand extends PimcoreCommand
     private bool $updateProfilePicture;
     private array $userIds;
     private string $userClass;
+    private SteamWebApiService $steamWebApiService;
 
     /**
      * @inheritDoc
@@ -40,7 +44,7 @@ class UpdateUserProfileCommand extends PimcoreCommand
             ->addOption(
                 self::OPTION_USER_IDS,
                 null,
-                InputOption::VALUE_REQUIRED|InputOption::VALUE_IS_ARRAY,
+                InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
                 "Only users with the given IDs will be updated"
             );
     }
@@ -58,23 +62,36 @@ class UpdateUserProfileCommand extends PimcoreCommand
 
         $users = $this->loadUsers();
 
+        /** @var SteamUserInterface $user */
         foreach ($users as $user) {
             $this->dumpVerbose("[Steam Web API] Updating user {$user->getId()}");
 
-
             $steamId = $user->getSteamId();
-            if(!empty($steamId)) {
-    //            $client = new Client($steamApiKey);
-    //            $steamUser = new ISteamUser($client);
-    //
-    //            $response = $steamUser->GetPlayerSummariesV2($steamId);
-    //
-    //            p_r($response);
+            if (!empty($steamId)) {
+                $response = $this->steamWebApiService->getProfileInfo($user->getSteamId());
 
-                // TODO: actually implement API
-                // TODO: actually fetch data from API
+                if($response->getStatusCode() === Response::HTTP_OK){
+                    $profileInfo = $response->toArray();
 
-//            $user->save(['versionNote' => 'Populated user with Steam-profile data']);
+                    $user->setSteamCommunityVisibilityState($profileInfo['response']['players']['player'][0]['communityvisibilitystate']);
+                    $user->setSteamProfileState($profileInfo['response']['players']['player'][0]['profilestate']);
+                    $user->setSteamUsername($profileInfo['response']['players']['player'][0]['personaname']);
+                    $user->setSteamCommentPermission($profileInfo['response']['players'][0]['player']['commentpermission']);
+                    $user->setSteamProfileUrl($profileInfo['response']['players']['player'][0]['profileurl']);
+                    $user->setSteamAvatar($profileInfo['response']['players']['player'][0]['avatar']);
+                    $user->setSteamAvatarMedium($profileInfo['response']['players']['player'][0]['avatarmedium']);
+                    $user->setSteamAvatarFull($profileInfo['response']['players']['player'][0]['avatarfull']);
+                    $user->setSteamAvatarHash($profileInfo['response']['players']['player'][0]['avatarhash']);
+                    $user->setSteamLastLogOff($profileInfo['response']['players']['player'][0]['lastlogoff']);
+                    $user->setSteamPersonaState($profileInfo['response']['players']['player'][0]['personastate']);
+                    $user->setSteamPersonaStateFlags($profileInfo['response']['players']['player'][0]['personastateflags']);
+                    $user->setSteamPrimaryClanId($profileInfo['response']['players']['player'][0]['primaryclanid']);
+                    $user->setSteamAccountCreationTime($profileInfo['response']['players']['player'][0]['timecreated']);
+
+                    $user->save(['versionNote' => 'Populated user with Steam-profile data']);
+                } else {
+                    // TODO: log error
+                }
             }
         }
     }
@@ -84,11 +101,13 @@ class UpdateUserProfileCommand extends PimcoreCommand
      */
     protected function loadUsers(): AbstractListing
     {
-        /** @var AbstractListing $users */
-        $users = new ($this->getListingClass());
+        /** @var AbstractListing $listingClass */
+        $listingClass = $this->getListingClass();
+
+        $users = new $listingClass();
         $users->addConditionParam("steamId <> ''");
 
-        if(!empty($this->userIds)) {
+        if (!empty($this->userIds)) {
             $users->addConditionParam("o_id IN (" . implode($this->userIds) . ")");
         }
 
@@ -101,5 +120,15 @@ class UpdateUserProfileCommand extends PimcoreCommand
     protected function getListingClass(): string
     {
         return NamespaceUtility::join($this->userClass, "Listing");
+    }
+
+    /**
+     * @required
+     * @internal
+     * @param SteamWebApiService $steamWebApiService
+     */
+    public function setSteamWebApiService(SteamWebApiService $steamWebApiService)
+    {
+        $this->steamWebApiService = $steamWebApiService;
     }
 }

@@ -7,3 +7,17 @@ services:
     Passioneight\Bundle\PimcoreSteamWebApiBundle\Controller\:
         resource: '../../Controller'
         tags: ['controller.service_arguments']
+
+    # Services
+    Passioneight\Bundle\PimcoreSteamWebApiBundle\Service\:
+        resource: '../../Service'
+
+    # Security
+    Passioneight\Bundle\PimcoreSteamWebApiBundle\Security\FirewallService:
+        arguments:
+            $firewallMap: '@security.firewall.map'
+
+    # Commands
+    Passioneight\Bundle\PimcoreSteamWebApiBundle\Command\:
+        resource: '../../Command'
+        tags: [ 'console.command' ]
