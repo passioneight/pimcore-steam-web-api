@@ -3,15 +3,15 @@
 namespace Passioneight\Bundle\PimcoreSteamWebApiBundle\Service\Api;
 
 use Passioneight\Bundle\PhpUtilitiesBundle\Service\Utility\UrlUtility;
-use Passioneight\Bundle\PimcoreSteamWebApiBundle\Constant\OpenIdParameter;
 use Passioneight\Bundle\PimcoreSteamWebApiBundle\Constant\SteamApiNamespace;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class SteamWebApiService extends WebApiService
 {
+    const VERSION_1 = "v1";
+    const VERSION_2 = "v2";
+
     // TODO: add this as configuration...
     const BASE_URL = "https://api.steampowered.com";
 
@@ -60,9 +60,36 @@ class SteamWebApiService extends WebApiService
     }
 
     /**
+     * @param string $steamId
+     * @return ResponseInterface
+     * @throws TransportExceptionInterface
+     */
+    public function getOwnedGames(string $steamId): ResponseInterface
+    {
+        $options = [
+            'query' => [
+                'steamid' => $steamId
+            ]
+        ];
+
+        $endpoint = UrlUtility::join(self::BASE_URL, SteamApiNamespace::STEAM_PLAYER_SERVICE, "GetOwnedGames", $this->version);
+        return $this->get($endpoint, $this->addApiKey($options));
+    }
+
+    /**
+     * @return ResponseInterface
+     * @throws TransportExceptionInterface
+     */
+    public function getAppList(): ResponseInterface
+    {
+        $endpoint = UrlUtility::join(self::BASE_URL, SteamApiNamespace::STEAM_APPS, "GetAppList", $this->version);
+        return $this->get($endpoint);
+    }
+
+    /**
      * @return $this
      */
-    protected function resetVersion(): self
+    public function resetVersion(): self
     {
         $this->version = $this->getDefaultVersion();
         return $this;

@@ -2,11 +2,12 @@
 
 namespace Passioneight\Bundle\PimcoreSteamWebApiBundle\Controller;
 
-use Passioneight\Bundle\PimcoreSteamWebApiBundle\Model\Entity\DataObject\SteamUserInterface;
-use Passioneight\Bundle\PimcoreSteamWebApiBundle\Service\Authentication\SteamOpenId;
-use Passioneight\Bundle\PimcoreSteamWebApiBundle\Service\Api\SteamWebApiService;
+use Passioneight\Bundle\PimcoreSteamWebApiBundle\Event\OpenId\OpenIdEvent;
 use Passioneight\Bundle\PimcoreSteamWebApiBundle\Security\FirewallService;
+use Passioneight\Bundle\PimcoreSteamWebApiBundle\Service\Authentication\SteamOpenId;
+use Passioneight\Bundle\PimcoreSteamWebApiBundle\Service\Model\SteamProfileService;
 use Pimcore\Controller\FrontendController;
+use Pimcore\Model\DataObject\SteamProfile;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,7 +20,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 class AuthenticationController extends FrontendController
 {
     use TargetPathTrait;
-    
+
     /**
      * @Route("/open-id")
      *
@@ -29,32 +30,28 @@ class AuthenticationController extends FrontendController
      * @param EventDispatcherInterface $eventDispatcher
      * @return RedirectResponse
      */
-    public function openIdAction(Request $request, FirewallService $firewallService, SteamOpenId $steamOpenId, EventDispatcherInterface $eventDispatcher)
+    public function openIdAction(Request $request, FirewallService $firewallService, SteamOpenId $steamOpenId, EventDispatcherInterface $eventDispatcher, SteamProfileService $steamProfileService)
     {
-        /** @var SteamUserInterface $user */
         $user = $this->getUser();
 
         $targetPath = $this->getTargetPath($request->getSession(), $firewallService->getFirewallNameForRequest($request));
         $targetPath = $targetPath ?: "/";   // TODO: add bundle config to allow setting the redirect value here
 
-        if(!empty($user->getSteamId())) {
-            // TODO: dispatch event --> allows to e.g. show already connected message
-            print_r("already set");
+        if($user->getSteamProfile()) {
+            $eventDispatcher->dispatch(new OpenIdEvent($user, OpenIdEvent::MESSAGE_ALREADY_CONNECTED));
             return new RedirectResponse($targetPath);
         }
-
 
         $steamId = $steamOpenId->getSteamId($request);
 
         if(!empty($steamId)) {
-            $user->setSteamId($steamId);
-            $user->save(['versionNote' => 'Connected to Steam']);
+            $steamProfile = $steamProfileService->createForUser($user, ['steamId' => $steamId]);
+            $steamProfile->save(['versionNote' => 'Steam account was linked']);
 
-            // TODO: start command to populate user with steam-data
+            $user->setSteamProfile($steamProfile);
+            $user->save(['versionNote' => 'Steam account was linked']);
 
-            // TODO: dispatch event --> allows to e.g. show success message to user
-        } else {
-            // TODO: dispatch event --> allows to e.g. show error message to user
+            $eventDispatcher->dispatch(new OpenIdEvent($user, OpenIdEvent::MESSAGE_CONNECTED));
         }
 
         return new RedirectResponse($targetPath);
@@ -69,22 +66,19 @@ class AuthenticationController extends FrontendController
      */
     public function revokeOpenIdAction(Request $request, FirewallService $firewallService)
     {
-        /** @var SteamUserInterface $user */
         $user = $this->getUser();
 
         $targetPath = $this->getTargetPath($request->getSession(), $firewallService->getFirewallNameForRequest($request));
         $targetPath = $targetPath ?: "/";   // TODO: add bundle config to allow setting the redirect value here
 
-        if(empty($user->getSteamId())) {
-            // TODO: dispatch event --> allows to e.g. show was not connected message
-            print_r("already disconnected");
+        if(empty($user->getSteamProfile())) {
+            $eventDispatcher->dispatch(new OpenIdEvent($user, OpenIdEvent::MESSAGE_ALREADY_DISCONNECTED));
             return new RedirectResponse($targetPath);
         }
 
-        $user->setSteamId(null);
-        $user->save(['versionNote' => 'Disconnected from Steam']);
+        $user->getSteamProfile()->delete(['versionNote' => 'Steam account was unlinked']);
 
-        // TODO: dispatch event --> allows to e.g. show successfully disconnected message
+        $eventDispatcher->dispatch(new OpenIdEvent($user, OpenIdEvent::MESSAGE_DISCONNECTED));
 
         return new RedirectResponse($targetPath);
     }
