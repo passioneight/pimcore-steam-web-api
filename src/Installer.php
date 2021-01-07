@@ -182,7 +182,11 @@ class Installer extends AbstractInstaller
     public static function getClassDefinitionNames(): array
     {
         return [
-            "SteamProfile"
+            "SteamProfile",
+            "SteamGame",
+            "SteamAchievement",
+            "SteamNews",
+            "SteamBadge",
         ];
     }
 }

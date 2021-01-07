@@ -2,21 +2,20 @@
 
 namespace Passioneight\Bundle\PimcoreSteamWebApiBundle\Command;
 
+use Passioneight\Bundle\PimcoreSteamWebApiBundle\Model\Entity\DataObject\SteamUserInterface;
 use Passioneight\Bundle\PimcoreSteamWebApiBundle\Model\Entity\Steam\SteamProfileInfo;
 use Passioneight\Bundle\PimcoreSteamWebApiBundle\Service\Api\SteamWebApiService;
 use Passioneight\Bundle\PimcoreSteamWebApiBundle\Service\Model\SteamProfileService;
 use Passioneight\Bundle\PimcoreSteamWebApiBundle\Service\SteamResponseService;
-use Pimcore\Console\AbstractCommand as PimcoreCommand;
 use Pimcore\Model\DataObject\SteamProfile;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpFoundation\Response;
 
-class UpdateUserProfileCommand extends PimcoreCommand
+class UpdateProfilesCommand extends AbstractSteamCommand
 {
     const MAX_STEAM_IDS_PER_REQUEST = 100;
 
-    private SteamWebApiService $steamWebApiService;
     private SteamProfileService $steamProfileService;
 
     /**
@@ -25,7 +24,7 @@ class UpdateUserProfileCommand extends PimcoreCommand
     protected function configure()
     {
         $this
-            ->setName('passioneight:steam-web-api:update-user-profile');
+            ->setName('passioneight:steam-web-api:update-profiles');
     }
 
     /**
@@ -43,7 +42,7 @@ class UpdateUserProfileCommand extends PimcoreCommand
             $steamIds = $this->mapToSteamIds($steamProfiles);
             $response = $this->steamWebApiService
                 ->useVersion(SteamWebApiService::VERSION_2)
-                ->getProfileInfo(...$steamIds);
+                ->getPlayerSummaries(...$steamIds);
 
             if($response->getStatusCode() === Response::HTTP_OK) {
                 $this->steamProfileService->update($response, true);
@@ -65,16 +64,6 @@ class UpdateUserProfileCommand extends PimcoreCommand
         }
 
         return $steamIds;
-    }
-
-    /**
-     * @required
-     * @internal
-     * @param SteamWebApiService $steamWebApiService
-     */
-    public function setSteamWebApiService(SteamWebApiService $steamWebApiService)
-    {
-        $this->steamWebApiService = $steamWebApiService;
     }
 
     /**

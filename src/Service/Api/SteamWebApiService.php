@@ -47,7 +47,7 @@ class SteamWebApiService extends WebApiService
      * @return ResponseInterface
      * @throws TransportExceptionInterface
      */
-    public function getProfileInfo(...$steamIds): ResponseInterface
+    public function getPlayerSummaries(...$steamIds): ResponseInterface
     {
         $options = [
             'query' => [
@@ -61,22 +61,98 @@ class SteamWebApiService extends WebApiService
 
     /**
      * @param string $steamId
+     * @param array $options
      * @return ResponseInterface
      * @throws TransportExceptionInterface
      */
-    public function getOwnedGames(string $steamId): ResponseInterface
+    public function getOwnedGames(string $steamId, array $options = []): ResponseInterface
     {
-        $options = [
+        $options = array_merge($options, [
             'query' => [
-                'steamid' => $steamId
+                'steamid' => $appId
             ]
-        ];
+        ]);
 
         $endpoint = UrlUtility::join(self::BASE_URL, SteamApiNamespace::STEAM_PLAYER_SERVICE, "GetOwnedGames", $this->version);
         return $this->get($endpoint, $this->addApiKey($options));
     }
 
     /**
+     * @param string $steamId
+     * @param array $options
+     * @return ResponseInterface
+     * @throws TransportExceptionInterface
+     */
+    public function getNewsForApp(string $appId, array $options = []): ResponseInterface
+    {
+        $options = array_merge($options, [
+            'query' => [
+                'appid' => $appId
+            ]
+        ]);
+
+        $endpoint = UrlUtility::join(self::BASE_URL, SteamApiNamespace::STEAM_NEWS, "GetNewsForApp", $this->version);
+        return $this->get($endpoint, $options);
+    }
+
+    /**
+     * @param string $steamId
+     * @param array $options
+     * @return ResponseInterface
+     * @throws TransportExceptionInterface
+     */
+    public function getGlobalAchievementPercentages(string $appId, array $options = []): ResponseInterface
+    {
+        $options = array_merge($options, [
+            'query' => [
+                'gameid' => $appId
+            ]
+        ]);
+
+        $endpoint = UrlUtility::join(self::BASE_URL, SteamApiNamespace::STEAM_USER_STATS, "GetGlobalAchievementPercentagesForApp", $this->version);
+        return $this->get($endpoint, $options);
+    }
+
+
+    /**
+     * @param string $steamId
+     * @param array $options
+     * @return ResponseInterface
+     * @throws TransportExceptionInterface
+     */
+    public function getFriendList(string $steamId, array $options = []): ResponseInterface
+    {
+        $options = array_merge($options, [
+            'query' => [
+                'steamid' => $steamId
+            ]
+        ]);
+
+        $endpoint = UrlUtility::join(self::BASE_URL, SteamApiNamespace::STEAM_USER, "GetFriendList", $this->version);
+        return $this->get($endpoint, $this->addApiKey($options));
+    }
+
+
+    /**
+     * @param string $steamId
+     * @param array $options
+     * @return ResponseInterface
+     * @throws TransportExceptionInterface
+     */
+    public function getRecentlyPlayedGames(string $steamId, array $options = []): ResponseInterface
+    {
+        $options = array_merge($options, [
+            'query' => [
+                'steamid' => $steamId
+            ]
+        ]);
+
+        $endpoint = UrlUtility::join(self::BASE_URL, SteamApiNamespace::STEAM_PLAYER_SERVICE, "GetRecentlyPlayedGames", $this->version);
+        return $this->get($endpoint, $this->addApiKey($options));
+    }
+
+    /**
+     * @param array $options
      * @return ResponseInterface
      * @throws TransportExceptionInterface
      */

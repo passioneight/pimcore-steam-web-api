@@ -3,6 +3,7 @@
 namespace Passioneight\Bundle\PimcoreSteamWebApiBundle\Controller;
 
 use Passioneight\Bundle\PimcoreSteamWebApiBundle\Event\OpenId\OpenIdEvent;
+use Passioneight\Bundle\PimcoreSteamWebApiBundle\Model\Entity\DataObject\SteamUserInterface;
 use Passioneight\Bundle\PimcoreSteamWebApiBundle\Security\FirewallService;
 use Passioneight\Bundle\PimcoreSteamWebApiBundle\Service\Authentication\SteamOpenId;
 use Passioneight\Bundle\PimcoreSteamWebApiBundle\Service\Model\SteamProfileService;
@@ -62,9 +63,10 @@ class AuthenticationController extends FrontendController
      *
      * @param Request $request
      * @param FirewallService $firewallService
+     * @param EventDispatcherInterface $eventDispatcher
      * @return RedirectResponse
      */
-    public function revokeOpenIdAction(Request $request, FirewallService $firewallService)
+    public function revokeOpenIdAction(Request $request, FirewallService $firewallService, EventDispatcherInterface $eventDispatcher)
     {
         $user = $this->getUser();
 

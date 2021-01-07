@@ -7,11 +7,13 @@ use Passioneight\Bundle\PimcoreSteamWebApiBundle\Constant\OpenIdMode;
 use Passioneight\Bundle\PimcoreSteamWebApiBundle\Constant\OpenIdParameter;
 use Pimcore\Tool;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\RouterInterface;
 
 class SteamOpenId
 {
     const PROVIDER_URL = 'https://steamcommunity.com/openid';
 
+    private RouterInterface $router;
     private string $providerUrl;
 
     /**
@@ -24,6 +26,23 @@ class SteamOpenId
     }
 
     /**
+     * @return string
+     */
+    public function generateLinkSteamAccountUrl(): string
+    {
+        $redirectUrl = Tool::getHostUrl() . $this->router->generate('passioneight_pimcoresteamwebapi_authentication_openid');
+        return $this->createOpenIdUrl($redirectUrl);
+    }
+
+    /**
+     * @return string
+     */
+    public function generateUnlinkSteamAccountUrl(): string
+    {
+        return $this->router->generate('passioneight_pimcoresteamwebapi_authentication_revokeopenid');
+    }
+
+    /**
      * @param string $redirectUrl
      * @param array $parameters to override/extend the appended parameters
      * @return string
@@ -31,7 +50,6 @@ class SteamOpenId
     public function createOpenIdUrl(string $redirectUrl, array $parameters = []): string
     {
         $config = [
-            // TODO: add these values as bundle configuration?
             OpenIdParameter::NAMESPACE => "http://specs.openid.net/auth/2.0",
             OpenIdParameter::SREG => "http://openid.net/extensions/sreg/1.1",
             OpenIdParameter::CLAIMED_ID => "http://specs.openid.net/auth/2.0/identifier_select",
@@ -82,5 +100,15 @@ class SteamOpenId
     protected function getLoginUrl(): string
     {
         return UrlUtility::join($this->providerUrl, "login");
+    }
+
+    /**
+     * @required
+     * @internal
+     * @param RouterInterface $router
+     */
+    public function setRouter(RouterInterface $router)
+    {
+        $this->router = $router;
     }
 }

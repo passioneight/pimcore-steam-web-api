@@ -22,20 +22,40 @@ class SteamProfileService extends AbstractSteamService
         $content = $this->getContent($response);
         $players = $this->getPlayers($content);
 
+        $fieldDefinitionNames = $this->getFieldDefinitionNames();
+
         foreach ($players as $player) {
             $steamId = $this->getSteamId($player);
             $steamProfiles = SteamProfile::getBySteamId($steamId);
-            
+
             if($steamProfiles->getTotalCount() !== 1) {
                 continue;
             }
-            
-            $steamProfile = $this->populate($steamProfiles->current(), $player);
+
+            $steamProfile = $steamProfiles->current();
+
+            $this->clear($steamProfile, $fieldDefinitionNames);
+            $this->populate($steamProfile, $player);
 
             if($save) {
                 $steamProfile->save(['versionNote' => 'Updated Steam profile']);
             }
         }
+    }
+
+    /**
+     * @inheritdoc
+     *
+     * We don't want to clear the "steamId" - just in case the API stops returning the value. Thus, we avoid losing
+     * the link to the user's Steam profile.
+     */
+    protected function clear(Concrete $object, array $values): Concrete
+    {
+        if(array_key_exists("steamId", $values)) {
+            unset($values["steamId"]);
+        }
+
+        return parent::clear($object, $values);
     }
 
     /**
@@ -47,10 +67,10 @@ class SteamProfileService extends AbstractSteamService
     public function createForUser(Concrete $user, array $steamProfileValues, bool $published = true): SteamProfile
     {
         $steamProfile = $this->populate(new SteamProfile(), $steamProfileValues);
-        $steamProfile->setParent($user);
+        $steamProfile->setParent($this->getOrCreateParent('/Steam/Profile'));   // TODO: add to configuration
         $steamProfile->setKey($steamProfile->getSteamId());
         $steamProfile->setPublished($published);
-        
+
         return $steamProfile;
     }
 
@@ -64,11 +84,10 @@ class SteamProfileService extends AbstractSteamService
     }
 
     /**
-     * @param array $player
-     * @return string|null
+     * @inheritdoc
      */
-    protected function getSteamId(array $player): ?string
+    protected function getRelatedObjectClass(): string
     {
-        return $this->get($player,'steamid');
+        return SteamProfile::class;
     }
 }

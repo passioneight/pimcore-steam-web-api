@@ -24,35 +24,62 @@ class TestController extends FrontendController
      */
     public function testAction(Request $request, SteamWebApiService $steamWebApiService)
     {
-        /** @var SteamUserInterface $user */
         $user = $this->getUser();
+        $steamId = $user->getSteamProfile()->getSteamId();
 
-        $response = $steamWebApiService
-            ->useVersion("v2")
-            ->getProfileInfo($user->getSteamId());
+//        $response = $steamWebApiService
+//            ->useVersion(SteamWebApiService::VERSION_2)
+//            ->getPlayerSummaries($steamId);
+//
+//        p_r($response->toArray());
 
-        p_r($response->getContent());
+//        $response = $steamWebApiService
+//            ->useVersion(SteamWebApiService::VERSION_2)
+//            ->getNewsForApp(440);
+//
+//        p_r($response->toArray());
 
-        $response = $steamWebApiService
-            ->resetVersion()
-            ->getOwnedGames($user->getSteamId());
+//        $response = $steamWebApiService
+//            ->getFriendList(76561198018470574);
+//
+//        p_r($response->toArray());
 
-        $games = $response->toArray()['response']['games'] ?: [];
-        $appIds = array_map(function(array $game){
-            return $game["appid"];
-        }, $games);
+//        $response = $steamWebApiService
+//            ->useVersion(SteamWebApiService::VERSION_2)
+//            ->getGlobalAchievementPercentages(440);
+//
+//        p_r($response->toArray());
+//
+//        $response = $steamWebApiService
+//            ->resetVersion()
+//            ->getOwnedGames($steamId);
+//
+//        p_r($response->toArray());
 
-        $response = $steamWebApiService
-            ->useVersion("v2")
-            ->getAppList();
-
-        $apps = $response->toArray()['applist']['apps'];
-        $matchedApps = array_filter($apps, function(array $app) use($appIds) {
-            return in_array($app["appid"], $appIds);
-        });
-
-        p_r('You have the following games:');
-        p_r($matchedApps);
+//        $response = $steamWebApiService
+//            ->resetVersion()
+//            ->getRecentlyPlayedGames($steamId);
+//
+//        p_r($response->toArray());
+//
+//        $games = $response->toArray()['response']['games'] ?: [];
+//        $appIds = array_map(function(array $game){
+//            return $game["appid"];
+//        }, $games);
+//
+//        $response = $steamWebApiService
+//            ->useVersion(SteamWebApiService::VERSION_2)
+//            ->getAppList();
+//
+//        p_r($response->getContent());
+//
+//        $apps = $response->toArray()['applist']['apps'];
+//        $matchedApps = array_filter($apps, function(array $app) use($appIds) {
+//            return in_array($app["appid"], $appIds);
+//        });
+//
+//        p_r('You have the following games:');
+//        p_r($matchedApps);
 
         exit;
     }
