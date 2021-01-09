@@ -53,4 +53,4 @@ This bundle will ease the process of fetching data from Steam comes with a pre-b
   - GetServerInfo
   - GetSupportedAPIList
 
-> Note that this bundle only implements a part of [Steam's Web API](https://partner.steamgames.com/doc/webapi).
+> Note that this bundle only implements the non-partner bit of [Steam's Web API](https://partner.steamgames.com/doc/webapi).
