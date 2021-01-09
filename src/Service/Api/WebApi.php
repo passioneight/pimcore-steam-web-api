@@ -2,15 +2,13 @@
 
 namespace Passioneight\Bundle\PimcoreSteamWebApiBundle\Service\Api;
 
-use Passioneight\Bundle\PhpUtilitiesBundle\Service\Utility\UrlUtility;
-use Passioneight\Bundle\PimcoreSteamWebApiBundle\Constant\OpenIdParameter;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
-abstract class WebApiService
+abstract class WebApi
 {
     protected HttpClientInterface $client;
 
@@ -90,7 +88,7 @@ abstract class WebApiService
         if(!isset($this->client)) {
             $this->client = HttpClient::create();
         }
-        
+
         return $this->client;
     }
 }

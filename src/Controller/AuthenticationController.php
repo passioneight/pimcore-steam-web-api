@@ -5,6 +5,7 @@ namespace Passioneight\Bundle\PimcoreSteamWebApiBundle\Controller;
 use Passioneight\Bundle\PimcoreSteamWebApiBundle\Event\OpenId\OpenIdEvent;
 use Passioneight\Bundle\PimcoreSteamWebApiBundle\Model\Entity\DataObject\SteamUserInterface;
 use Passioneight\Bundle\PimcoreSteamWebApiBundle\Security\FirewallService;
+use Passioneight\Bundle\PimcoreSteamWebApiBundle\Service\Api\SteamWebApiService;
 use Passioneight\Bundle\PimcoreSteamWebApiBundle\Service\Authentication\SteamOpenId;
 use Passioneight\Bundle\PimcoreSteamWebApiBundle\Service\Model\SteamProfileService;
 use Pimcore\Controller\FrontendController;

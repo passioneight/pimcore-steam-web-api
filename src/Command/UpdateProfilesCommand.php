@@ -4,15 +4,15 @@ namespace Passioneight\Bundle\PimcoreSteamWebApiBundle\Command;
 
 use Passioneight\Bundle\PimcoreSteamWebApiBundle\Model\Entity\DataObject\SteamUserInterface;
 use Passioneight\Bundle\PimcoreSteamWebApiBundle\Model\Entity\Steam\SteamProfileInfo;
-use Passioneight\Bundle\PimcoreSteamWebApiBundle\Service\Api\SteamWebApiService;
 use Passioneight\Bundle\PimcoreSteamWebApiBundle\Service\Model\SteamProfileService;
 use Passioneight\Bundle\PimcoreSteamWebApiBundle\Service\SteamResponseService;
+use Pimcore\Console\AbstractCommand;
 use Pimcore\Model\DataObject\SteamProfile;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpFoundation\Response;
 
-class UpdateProfilesCommand extends AbstractSteamCommand
+class UpdateProfilesCommand extends AbstractCommand
 {
     const MAX_STEAM_IDS_PER_REQUEST = 100;
 

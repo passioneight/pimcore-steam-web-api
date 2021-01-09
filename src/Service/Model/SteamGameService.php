@@ -3,6 +3,7 @@
 namespace Passioneight\Bundle\PimcoreSteamWebApiBundle\Service\Model;
 
 use Pimcore\Model\DataObject\Concrete;
+use Pimcore\Model\DataObject\Folder;
 use Pimcore\Model\DataObject\SteamOwnedGame;
 use Pimcore\Model\DataObject\SteamProfile;
 use Symfony\Contracts\HttpClient\ResponseInterface;
@@ -131,5 +132,13 @@ class SteamGameService extends AbstractSteamService
     protected function getRelatedObjectClass(): string
     {
         return SteamOwnedGame::class;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getRelatedParentFolder(): Folder
+    {
+        return $this->getOrCreateParent($this->bundleConfiguration->getParentFolderForGames());
     }
 }

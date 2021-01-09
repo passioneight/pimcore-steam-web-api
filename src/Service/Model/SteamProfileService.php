@@ -3,6 +3,7 @@
 namespace Passioneight\Bundle\PimcoreSteamWebApiBundle\Service\Model;
 
 use Pimcore\Model\DataObject\Concrete;
+use Pimcore\Model\DataObject\Folder;
 use Pimcore\Model\DataObject\SteamProfile;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
@@ -66,8 +67,9 @@ class SteamProfileService extends AbstractSteamService
      */
     public function createForUser(Concrete $user, array $steamProfileValues, bool $published = true): SteamProfile
     {
-        $steamProfile = $this->populate(new SteamProfile(), $steamProfileValues);
-        $steamProfile->setParent($this->getOrCreateParent('/Steam/Profile'));   // TODO: add to configuration
+        $class = $this->getRelatedObjectClass();
+        $steamProfile = $this->populate(new $class(), $steamProfileValues);
+        $steamProfile->setParent($this->getRelatedParentFolder());
         $steamProfile->setKey($steamProfile->getSteamId());
         $steamProfile->setPublished($published);
 
@@ -89,5 +91,13 @@ class SteamProfileService extends AbstractSteamService
     protected function getRelatedObjectClass(): string
     {
         return SteamProfile::class;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getRelatedParentFolder(): Folder
+    {
+        return $this->getOrCreateParent($this->bundleConfiguration->getParentFolderForProfiles());
     }
 }

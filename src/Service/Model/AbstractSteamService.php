@@ -5,6 +5,7 @@ namespace Passioneight\Bundle\PimcoreSteamWebApiBundle\Service\Model;
 use Passioneight\Bundle\PhpUtilitiesBundle\Service\Utility\MethodUtility;
 use Passioneight\Bundle\PhpUtilitiesBundle\Service\Utility\NamespaceUtility;
 use Passioneight\Bundle\PimcoreSiteConfigBundle\Installer;
+use Passioneight\Bundle\PimcoreSteamWebApiBundle\Service\Configuration\SteamWebApiConfiguration;
 use Pimcore\Model\DataObject;
 use Pimcore\Model\DataObject\AbstractObject;
 use Pimcore\Model\DataObject\ClassDefinition;
@@ -14,6 +15,8 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 
 abstract class AbstractSteamService
 {
+    protected SteamWebApiConfiguration $bundleConfiguration;
+    
     /**
      * @param mixed$object
      * @param array $values
@@ -55,7 +58,8 @@ abstract class AbstractSteamService
      */
     public function getFieldDefinitionNames(): array
     {
-        $classDefinition = ClassDefinition::getById(Installer::CLASS_ID_PREFIX . NamespaceUtility::getClassNameFromNamespace($this->getRelatedObjectClass()));
+        $classId = Installer::CLASS_ID_PREFIX . NamespaceUtility::getClassNameFromNamespace($this->getRelatedObjectClass());
+        $classDefinition = ClassDefinition::getById($classId);
 
         $fieldDefinitionNames = [];
         if($classDefinition) {
@@ -73,6 +77,11 @@ abstract class AbstractSteamService
      * @return string
      */
     abstract protected function getRelatedObjectClass(): string;
+
+    /**
+     * @return DataObject\Folder
+     */
+    abstract protected function getRelatedParentFolder(): DataObject\Folder;
 
     /**
      * @param $path
@@ -117,5 +126,15 @@ abstract class AbstractSteamService
     protected function get(array $data, string $key, $defaultValue = [])
     {
         return array_key_exists($key, $data) ? $data[$key] : $defaultValue;
+    }
+
+    /**
+     * @required
+     * @internal
+     * @param SteamWebApiConfiguration $bundleConfiguration
+     */
+    public function setBundleConfiguration(SteamWebApiConfiguration $bundleConfiguration)
+    {
+        $this->bundleConfiguration = $bundleConfiguration;
     }
 }

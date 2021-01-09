@@ -8,6 +8,7 @@ This **Pimcore**-bundle provides an API and corresponding `DataObject`s, which c
 ###### Table of contents
 - [Installation](/documentation/10_installation.md)
 - [Prerequisites](/documentation/15_prerequisites.md)
+- [Configuration](/documentation/19_configuration.md)
 - [Usage](/documentation/20_usage.md)
   - [Open ID](/documentation/20_usage.md#open-id)
   - [Automatically handling Steam data](/documentation/20_usage.md#automatically-handling-steam-data)
@@ -27,29 +28,29 @@ This bundle will ease the process of fetching data from Steam comes with a pre-b
 - [IPlayerService](https://partner.steamgames.com/doc/webapi/IPlayerService)
   - GetRecentlyPlayedGames
   - GetOwnedGames
-  - GetSteamLevel **TODO**
-  - GetBadges **TODO**
-  - GetCommunityBadgesProgress **TODO**
-  - IsPlayingSharedGame **TODO**
+  - GetSteamLevel
+  - GetBadges
+  - GetCommunityBadgesProgress
+  - IsPlayingSharedGame
 - [ISteamNews](https://partner.steamgames.com/doc/webapi/ISteamNews)
   - GetNewsForApp
 - [ISteamApps](https://partner.steamgames.com/doc/webapi/ISteamApps)
   - GetAppList
 - [ISteamUser](https://partner.steamgames.com/doc/webapi/ISteamUser)
   - GetFriendList
-  - GetPlayerBans **TODO**
+  - GetPlayerBans
   - GetPlayerSummaries
-  - GetUserGroupList **TODO**
-  - ResolveVanityUrl **TODO**
+  - GetUserGroupList
+  - ResolveVanityUrl
 - [ISteamUserStats](https://partner.steamgames.com/doc/webapi/ISteamUserStats)
   - GetGlobalAchievementPercentagesForApp
-  - GetGlobalStatsForGame **TODO**
-  - GetNumberOfCurrentPlayers **TODO**
-  - GetPlayerAchievements **TODO**
-  - GetSchemaForGame **TODO**
-  - GetUserStatsForGame **TODO**
+  - GetGlobalStatsForGame
+  - GetNumberOfCurrentPlayers
+  - GetPlayerAchievements
+  - GetSchemaForGame
+  - GetUserStatsForGame
 - [ISteamWebAPIUtil](https://partner.steamgames.com/doc/webapi/ISteamWebAPIUtil)
-  - GetServerInfo **TODO**
-  - GetSupportedAPIList **TODO**
+  - GetServerInfo
+  - GetSupportedAPIList
 
 > Note that this bundle only implements a part of [Steam's Web API](https://partner.steamgames.com/doc/webapi).

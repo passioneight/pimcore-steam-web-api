@@ -4,13 +4,13 @@ namespace Passioneight\Bundle\PimcoreSteamWebApiBundle\Command;
 
 use Passioneight\Bundle\PimcoreSteamWebApiBundle\Service\Model\SteamGameService;
 use Passioneight\Bundle\PimcoreSteamWebApiBundle\Service\SteamResponseService;
-use Pimcore\Model\DataObject\SteamOwnedGame;
+use Pimcore\Console\AbstractCommand;
 use Pimcore\Model\User;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpFoundation\Response;
 
-class UpdateGamesCommand extends AbstractSteamCommand
+class UpdateGamesCommand extends AbstractCommand
 {
     const USERS_PER_PAGE = 100;
 
@@ -36,7 +36,7 @@ class UpdateGamesCommand extends AbstractSteamCommand
 //        $users->addConditionParam("steamOwnedGames <> ''");
 
         $users->setLimit(self::USERS_PER_PAGE);
-
+        
         if($users->getTotalCount() > 0) {
 //            $appListResponse = $this->steamWebApiService
 //                ->useVersion(SteamWebApiService::VERSION_2)
