@@ -3,12 +3,12 @@ The following configuration is available for this bundle:
 
 ```yaml
 pimcore_steam_web_api:
-    key: 'your-key' # string; required
-    base_url: 'https://api.steampowered.com'  # string; optional
+    key: your-key # string; required
+    base_url: https://api.steampowered.com  # string; optional
     
     open_id:
-        link_account_redirect: 'app_account_profile' # string; required
-        unlink_account_redirect: 'app_account_profile' # string; required
+        link_account_redirect: app_account_profile # string; required
+        unlink_account_redirect: app_account_profile # string; required
 
     parent_folder:
         profiles: '/Steam/Profiles' # string; optional
