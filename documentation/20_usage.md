@@ -141,7 +141,7 @@ As shown in the code above: In case you need a different kind of version for an 
 > The `useVersion` method will actually set the version, i.e., you need to call `resetVersion()` if any subsequent API calls
 > should use the default version.
 
-Most of the API calls support passing options _to the API_. For example, when an endpoint allows to filter the result with
+Most of the API calls support passing options to _Steam's API_ - for example, when an endpoint allows to filter the result with
 parameters sent via the request. However, sometimes the options can be passed merely for the sake of support of future updates
 of Steam's API. So, make sure you check out Steam's documentation to see what versions and options are available for the
 corresponding endpoints.
