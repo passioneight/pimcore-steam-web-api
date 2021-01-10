@@ -18,8 +18,6 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->getRootNode();
 
         $this->addGeneralConfiguration($rootNode);
-        $this->addOpenIdConfiguration($rootNode);
-        $this->addDataObjectParentConfiguration($rootNode);
 
         return $treeBuilder;
     }
@@ -37,60 +35,6 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode(Config::BASE_URL)
                     ->defaultValue("https://api.steampowered.com")
                     ->cannotBeEmpty()
-                ->end()
-            ->end();
-    }
-
-    /**
-     * @param ArrayNodeDefinition $rootNode
-     */
-    private function addOpenIdConfiguration(ArrayNodeDefinition $rootNode)
-    {
-        $rootNode
-            ->children()
-                ->arrayNode(Config::OPEN_ID)
-                    ->children()
-                        ->scalarNode(Config::LINK_ACCOUNT_REDIRECT)
-                            ->cannotBeEmpty()
-                        ->end()
-                        ->scalarNode(Config::UNLINK_ACCOUNT_REDIRECT)
-                            ->cannotBeEmpty()
-                        ->end()
-                    ->end()
-                ->end()
-            ->end();
-    }
-
-    /**
-     * @param ArrayNodeDefinition $rootNode
-     */
-    private function addDataObjectParentConfiguration(ArrayNodeDefinition $rootNode)
-    {
-        $rootNode
-            ->children()
-                ->arrayNode(Config::PARENT_FOLDER)
-                    ->children()
-                        ->scalarNode(Config::PARENT_FOLDER_PROFILES)
-                            ->defaultValue("/Steam/Profiles")
-                            ->cannotBeEmpty()
-                        ->end()
-                        ->scalarNode(Config::PARENT_FOLDER_GAMES)
-                            ->defaultValue("/Steam/Games")
-                            ->cannotBeEmpty()
-                        ->end()
-                        ->scalarNode(Config::PARENT_FOLDER_ACHIEVEMENTS)
-                            ->defaultValue("/Steam/Achievements")
-                            ->cannotBeEmpty()
-                        ->end()
-                        ->scalarNode(Config::PARENT_FOLDER_NEWS)
-                            ->defaultValue("/Steam/News")
-                            ->cannotBeEmpty()
-                        ->end()
-                        ->scalarNode(Config::PARENT_FOLDER_BADGES)
-                            ->defaultValue("/Steam/Badges")
-                            ->cannotBeEmpty()
-                        ->end()
-                    ->end()
                 ->end()
             ->end();
     }
