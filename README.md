@@ -11,8 +11,7 @@ This **Pimcore**-bundle provides an API and corresponding `DataObject`s, which c
 - [Configuration](/documentation/19_configuration.md)
 - [Usage](/documentation/20_usage.md)
   - [Open ID](/documentation/20_usage.md#open-id)
-  - [Automatically handling Steam data](/documentation/20_usage.md#automatically-handling-steam-data)
-  - [Manually using the API](/documentation/20_usage.md#manually-using-the-api)
+  - [Using the API](/documentation/20_usage.md#using-the-api)
 
 # When should I use this bundle?
 If you are using Pimcore to create a project that needs information about a user's Steam profile. Or you just want the
