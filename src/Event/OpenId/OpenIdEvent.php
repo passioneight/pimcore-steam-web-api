@@ -14,7 +14,6 @@ abstract class OpenIdEvent extends Event
     /**
      * OpenIdEvent constructor.
      * @param UserInterface $user
-     * @param string $translationKey
      */
     public function __construct(UserInterface $user)
     {

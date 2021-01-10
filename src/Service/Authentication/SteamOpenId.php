@@ -65,7 +65,6 @@ class SteamOpenId
     }
 
     /**
-     * @todo: move this to a different service
      * @param Request $request
      * @return string|null
      */

@@ -68,7 +68,7 @@ abstract class SteamWebApi extends WebApi
      * @param array $options
      * @return array
      */
-    protected function addApiKey(array $options)
+    protected function addApiKey(array $options): array
     {
         $options = array_key_exists('query', $options) ? $options : ['query' => []];
         $options['query'] = array_merge($options['query'], [

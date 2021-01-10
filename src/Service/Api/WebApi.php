@@ -18,7 +18,7 @@ abstract class WebApi
      * @return ResponseInterface
      * @throws TransportExceptionInterface
      */
-    public function get(string $url, array $options = [])
+    public function get(string $url, array $options = []): ResponseInterface
     {
         return $this->sendRequest(Request::METHOD_GET, $url, $options);
     }
@@ -29,7 +29,7 @@ abstract class WebApi
      * @return ResponseInterface
      * @throws TransportExceptionInterface
      */
-    public function post(string $url, array $options = [])
+    public function post(string $url, array $options = []): ResponseInterface
     {
         return $this->sendRequest(Request::METHOD_POST, $url, $options);
     }
@@ -40,7 +40,7 @@ abstract class WebApi
      * @return ResponseInterface
      * @throws TransportExceptionInterface
      */
-    public function patch(string $url, array $options = [])
+    public function patch(string $url, array $options = []): ResponseInterface
     {
         return $this->sendRequest(Request::METHOD_PATCH, $url, $options);
     }
@@ -51,7 +51,7 @@ abstract class WebApi
      * @return ResponseInterface
      * @throws TransportExceptionInterface
      */
-    public function put(string $url, array $options = [])
+    public function put(string $url, array $options = []): ResponseInterface
     {
         return $this->sendRequest(Request::METHOD_PUT, $url, $options);
     }
@@ -62,7 +62,7 @@ abstract class WebApi
      * @return ResponseInterface
      * @throws TransportExceptionInterface
      */
-    public function delete(string $url, array $options = [])
+    public function delete(string $url, array $options = []): ResponseInterface
     {
         return $this->sendRequest(Request::METHOD_DELETE, $url, $options);
     }

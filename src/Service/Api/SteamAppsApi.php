@@ -10,7 +10,6 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 class SteamAppsApi extends SteamWebApi
 {
     /**
-     * @param array $options
      * @return ResponseInterface
      * @throws TransportExceptionInterface
      */

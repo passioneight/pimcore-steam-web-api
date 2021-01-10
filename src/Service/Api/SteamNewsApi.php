@@ -9,7 +9,7 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 class SteamNewsApi extends SteamWebApi
 {
     /**
-     * @param string $steamId
+     * @param string $appId
      * @param array $options
      * @return ResponseInterface
      * @throws TransportExceptionInterface

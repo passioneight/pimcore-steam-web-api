@@ -10,8 +10,8 @@ use Passioneight\Bundle\PimcoreSteamWebApiBundle\Event\OpenId\CouldNotDisconnect
 use Passioneight\Bundle\PimcoreSteamWebApiBundle\Event\OpenId\DisconnectedEvent;
 use Passioneight\Bundle\PimcoreSteamWebApiBundle\Service\Authentication\SteamOpenId;
 use Pimcore\Controller\FrontendController;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
@@ -26,7 +26,7 @@ class AuthenticationController extends FrontendController
      * @param Request $request
      * @param SteamOpenId $steamOpenId
      * @param EventDispatcherInterface $eventDispatcher
-     * @return RedirectResponse
+     * @return Response
      */
     public function openIdAction(Request $request, SteamOpenId $steamOpenId, EventDispatcherInterface $eventDispatcher)
     {
@@ -55,7 +55,7 @@ class AuthenticationController extends FrontendController
      *
      * @param Request $request
      * @param EventDispatcherInterface $eventDispatcher
-     * @return RedirectResponse
+     * @return Response
      */
     public function revokeOpenIdAction(Request $request, EventDispatcherInterface $eventDispatcher)
     {
