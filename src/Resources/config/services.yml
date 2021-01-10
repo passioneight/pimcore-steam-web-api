@@ -12,11 +12,6 @@ services:
     Passioneight\Bundle\PimcoreSteamWebApiBundle\Service\:
         resource: '../../Service'
 
-    # Security
-    Passioneight\Bundle\PimcoreSteamWebApiBundle\Security\FirewallService:
-        arguments:
-            $firewallMap: '@security.firewall.map'
-
     # Commands
     Passioneight\Bundle\PimcoreSteamWebApiBundle\Command\:
         resource: '../../Command'
