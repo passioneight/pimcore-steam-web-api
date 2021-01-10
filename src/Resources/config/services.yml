@@ -11,8 +11,3 @@ services:
     # Services
     Passioneight\Bundle\PimcoreSteamWebApiBundle\Service\:
         resource: '../../Service'
-
-    # Commands
-    Passioneight\Bundle\PimcoreSteamWebApiBundle\Command\:
-        resource: '../../Command'
-        tags: [ 'console.command' ]
