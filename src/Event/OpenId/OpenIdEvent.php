@@ -3,28 +3,22 @@
 namespace Passioneight\Bundle\PimcoreSteamWebApiBundle\Event\OpenId;
 
 use Symfony\Component\EventDispatcher\Event;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class OpenIdEvent extends Event
+abstract class OpenIdEvent extends Event
 {
-    const MESSAGE_CONNECTED = "openid.connected";
-    const MESSAGE_ALREADY_CONNECTED = "openid.already-connected";
-
-    const MESSAGE_DISCONNECTED = "openid.disconnected";
-    const MESSAGE_ALREADY_DISCONNECTED = "openid.already-disconnected";
-
     private UserInterface $user;
-    private string $translationKey;
+    private Response $response;
 
     /**
      * OpenIdEvent constructor.
      * @param UserInterface $user
      * @param string $translationKey
      */
-    public function __construct(UserInterface $user, string $translationKey)
+    public function __construct(UserInterface $user)
     {
         $this->user = $user;
-        $this->type = $translationKey;
     }
 
     /**
@@ -38,8 +32,21 @@ class OpenIdEvent extends Event
     /**
      * @return string
      */
-    public function getTranslationKey(): string
+    abstract public function getTranslationKey(): string;
+
+    /**
+     * @param Response $response
+     */
+    public function setResponse(Response $response)
     {
-        return $this->type;
+        $this->response = $response;
+    }
+
+    /**
+     * @return Response
+     */
+    public function getResponse(): Response
+    {
+        return $this->response;
     }
 }
