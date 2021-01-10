@@ -31,33 +31,33 @@ Generate and display the links when needed and the user can link their Steam pro
 > removing the `Steam ID` from it. However, you'll want to eventually delete any data
 > related to the user's Steam profile, due to GDPR reasons.
 
-## Automatically handling Steam data
-TODO: explain commands
-
-- `passioneight:steam-web-api:update-profiles`
-- `passioneight:steam-web-api:update-games`
-
-## Manually using the API
-To use the API, inject the `SteamWebApiService` and call any of the provided methods. In case you need a different
-kind of version for an endpoint, call `useVersion(...)`.
-
-> The `useVersion` method will actually set the version, i.e., you need to call `resetVersion()` if any subsequent API calls
-> should use the default version.
+## Using the API
+To use the API, inject the needed `SteamWebApi` service, i.e. either of:
+- `SteamAppsApi`
+- `SteamNewsApi`
+- `SteamPlayerServiceApi`
+- `SteamUserApi`
+- `SteamUserStatsApi`
+- `SteamUtilApi`
 
 An example API call looks like this:
 
 ```php
-$response = $steamWebApiService
-    ->useVersion(SteamWebApiService::VERSION_2)
+$response = $steamPlayerService
+    ->useVersion(SteamWebApi::VERSION_2)
     ->getPlayerSummaries($steamId);
 ```
 
-> Always make sure to call the correct version of the API, as otherwise you might get an error response.
+As shown in the code above: In case you need a different kind of version for an endpoint, call `useVersion(...)`.
 
+Always make sure to call the correct version of the API, as otherwise you might get an error response.
 
+> The `useVersion` method will actually set the version, i.e., you need to call `resetVersion()` if any subsequent API calls
+> should use the default version.
 
+Most of the API calls support passing options _to the API_. For example, when an endpoint allows to filter the result with
+parameters sent via the request. However, sometimes the options can be passed merely for the sake of support of future updates
+of Steam's API. So, make sure you check out Steam's documentation to see what versions and options are available for the
+corresponding endpoints.
 
-> You are limited to one hundred thousand (100,000) calls to the Steam Web API per day.
-> Valve may approve higher daily call limits if you adhere to these API Terms of Use.
-
-### [Next Chapter: Customization](/documentation/30_customization.md)
+### [Go back to overview](/README.md)
