@@ -1,35 +1,121 @@
 # Usage
 Depending on how you want to use this bundle, there are a few things to consider.
 
-## Open ID
-If you want to let the user link their Steam account using `OpenId`, you'll want to have a `User` class, which contains
-the `relation`-field `steamProfile`.
+## Linking the User's Profile
+When it comes to linking the user's Steam profile, consider the following:
+- a `DataObject`-class is needed - e.g., `SteamProfile`
+  - must contain a `Text`-field `steamId`
+- a `UserInterface` object is needed - i.e., a user must be authenticated via Symfony
+  - must contain a `Relation`-field `steamProfile`
+- an `EventSubscriber` is needed - e.g. `SteamOpenIdSubscriber`
 
-> Note that you don't need to name the class `User` - so, `Customer`, `Player` and so on are valid too.
-> However, the `User` class is assumed. Thus, any command will work out-of-the-box with this class, but provides
-> a corresponding option to change it.
+> All the things above are quite project-specific, which is why they are not included in this bundle.
 
-Once the class is ready, the following code will generate the required links - provided the
-`SteamOpenId` service was injected:
+Assuming that all classes are created within Pimcore as described above, you'll actually only need to implement the
+`SteamOpenIdSubscriber` class. To help ease this process, you may extend from the `SteamOpenIdSubscriber` class provided
+by this bundle.
+
+An example may look like this:
+```php
+<?php
+
+namespace AppBundle\EventSubscriber\Steam;
+
+use Passioneight\Bundle\PimcoreSteamWebApiBundle\Event\OpenId\AlreadyConnectedEvent;
+use Passioneight\Bundle\PimcoreSteamWebApiBundle\Event\OpenId\AlreadyDisconnectedEvent;
+use Passioneight\Bundle\PimcoreSteamWebApiBundle\Event\OpenId\ConnectedEvent;
+use Passioneight\Bundle\PimcoreSteamWebApiBundle\Event\OpenId\CouldNotConnectEvent;
+use Passioneight\Bundle\PimcoreSteamWebApiBundle\Event\OpenId\CouldNotDisconnectEvent;
+use Passioneight\Bundle\PimcoreSteamWebApiBundle\Event\OpenId\DisconnectedEvent;
+use Passioneight\Bundle\PimcoreSteamWebApiBundle\EventSubscribers\SteamOpenIdSubscriber as AbstractSteamOpenIdSubscriber;
+use Pimcore\Model\DataObject\SteamProfile;
+use Pimcore\Model\DataObject\User;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+
+class SteamOpenIdSubscriber extends AbstractSteamOpenIdSubscriber
+{
+    /**
+     * @inheritdoc
+     */
+    public function onConnected(ConnectedEvent $event)
+    {
+        $steamProfile = new SteamProfile();
+        $steamProfile->setPublished(true);
+        $steamProfile->setKey($event->getSteamId());
+        $steamProfile->setParent('/Steam/Profiles');    // Change as needed
+        $steamProfile->setSteamId($event->getSteamId());
+        $steamProfile->save(['versionNote' => 'Linked Steam account']);
+        
+        /** @var User $user */
+        $user = $event->getUser();
+        $user->setSteamProfile($steamProfile);
+        $user->save(['versionNote' => 'Linked Steam account']);
+
+        $event->setResponse(new RedirectResponse($event->getUser()->getDetailLink()));
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function onDisconnected(DisconnectedEvent $event)
+    {
+        $event->setResponse(new RedirectResponse($event->getUser()->getDetailLink()));
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function onAlreadyConnected(AlreadyConnectedEvent $event)
+    {
+        $event->setResponse(new RedirectResponse($event->getUser()->getDetailLink()));
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function onAlreadyDisconnected(AlreadyDisconnectedEvent $event)
+    {
+        $event->setResponse(new RedirectResponse($event->getUser()->getDetailLink()));
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function onCouldNotConnect(CouldNotConnectEvent $event)
+    {
+        $event->setResponse(new RedirectResponse($event->getUser()->getDetailLink()));
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function onCouldNotDisconnect(CouldNotDisconnectEvent $event)
+    {
+        $event->setResponse(new RedirectResponse($event->getUser()->getDetailLink()));
+    }
+}
+```
+
+For the sake of simplicity, we always want to redirect to the user's profile page - i.e., the detail link. However, you
+probably want to display corresponding flash messages or do something completely different.
+
+> The `getDetailLink` can be implemented using a `LinkGenerator`. See Pimcore's documentation for further details.
+
+Now that un-/linking is possible, the only thing left to do is generating the links for the user to click on. Simply inject
+the `SteamOpenId` service into your controller and call the following methods to generate the links:
 
 ```php
 $linkSteamAccountUrl = $steamOpenId->generateLinkSteamAccountUrl();
 $unlinkSteamAccountUrl = $steamOpenId->generateUnlinkSteamAccountUrl();
 ```
 
-Generate and display the links when needed and the user can link their Steam profile.
+Note that at this point the user will only have a `SteamProfile` containing the `steamId` - nothing else. You can either
+update the `SteamProfile` via the API right away or implement a `Command` so you can update the `SteamProfile` on a regular
+basis.
 
-> Note that at this point the user will only have a `SteamProfile` with a `Steam ID` - nothing else. If you need to update
-> right away, leverage the `OpenIdEvent` and checkout the [section on how to manually use the API](#manually-using-the-api).
+> Obviously, you'll need to update the `SteamProfile` class to support any needed fields.
 
-> #### Please note
-> Steam **does not** use `OpenId Connect`, but `OpenId` directly.
-> Thus, linking the Steam account doesn't actually do much, but return the
-> user's `Steam ID` - wich in turn is saved in a `SteamProfile` object.
-> 
-> This means, unlinking can only be done by deleting the `SteamProfile` object or
-> removing the `Steam ID` from it. However, you'll want to eventually delete any data
-> related to the user's Steam profile, due to GDPR reasons.
+> Mind the request limit of Steam's API.
 
 ## Using the API
 To use the API, inject the needed `SteamWebApi` service, i.e. either of:
@@ -50,7 +136,7 @@ $response = $steamPlayerService
 
 As shown in the code above: In case you need a different kind of version for an endpoint, call `useVersion(...)`.
 
-Always make sure to call the correct version of the API, as otherwise you might get an error response.
+> Always make sure to call the correct version of the API, as otherwise you might get an error response.
 
 > The `useVersion` method will actually set the version, i.e., you need to call `resetVersion()` if any subsequent API calls
 > should use the default version.
