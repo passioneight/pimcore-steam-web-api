@@ -2,9 +2,9 @@
 
 namespace Passioneight\Bundle\PimcoreSteamWebApiBundle\Event\OpenId;
 
-use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Contracts\EventDispatcher\Event;
 
 abstract class OpenIdEvent extends Event
 {
