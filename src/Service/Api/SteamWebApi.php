@@ -5,7 +5,7 @@ namespace Passioneight\Bundle\PimcoreSteamWebApiBundle\Service\Api;
 use Passioneight\Bundle\PhpUtilitiesBundle\Service\Utility\UrlUtility;
 use Passioneight\Bundle\PimcoreSteamWebApiBundle\Service\Configuration\SteamWebApiConfiguration;
 
-class SteamWebApi extends WebApi
+abstract class SteamWebApi extends WebApi
 {
     const VERSION_1 = "v1";
     const VERSION_2 = "v2";
