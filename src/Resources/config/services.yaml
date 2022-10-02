@@ -4,10 +4,10 @@ services:
         autoconfigure: true
 
     # Controllers
-    Passioneight\Bundle\PimcoreSteamWebApiBundle\Controller\:
+    Passioneight\PimcoreSteamWebApi\Controller\:
         resource: '../../Controller'
         tags: ['controller.service_arguments']
 
     # Services
-    Passioneight\Bundle\PimcoreSteamWebApiBundle\Service\:
+    Passioneight\PimcoreSteamWebApi\Service\:
         resource: '../../Service'
