@@ -1,9 +1,10 @@
 <?php
 
-namespace Passioneight\Bundle\PimcoreSteamWebApiBundle\Service\Api;
+namespace Passioneight\PimcoreSteamWebApi\Service\Api;
 
 use Passioneight\Bundle\PhpUtilitiesBundle\Service\Utility\UrlUtility;
-use Passioneight\Bundle\PimcoreSteamWebApiBundle\Service\Configuration\SteamWebApiConfiguration;
+use Passioneight\PimcoreSteamWebApi\Service\Configuration\SteamWebApiConfiguration;
+use Symfony\Contracts\Service\Attribute\Required;
 
 abstract class SteamWebApi extends WebApi
 {
@@ -18,7 +19,7 @@ abstract class SteamWebApi extends WebApi
      * SteamWebApiService constructor.
      * @param string $version
      */
-    public function __construct(string $version = "v1")
+    public function __construct(string $version = self::VERSION_1)
     {
         $this->defaultVersion = $version;
         $this->version = $this->defaultVersion;
@@ -78,11 +79,10 @@ abstract class SteamWebApi extends WebApi
     }
 
     /**
-     * @required
      * @internal
-     * @param SteamWebApiConfiguration $bundleConfiguration
      */
-    public function setBundleConfiguration(SteamWebApiConfiguration $bundleConfiguration)
+    #[Required]
+    public function setBundleConfiguration(SteamWebApiConfiguration $bundleConfiguration): void
     {
         $this->bundleConfiguration = $bundleConfiguration;
     }

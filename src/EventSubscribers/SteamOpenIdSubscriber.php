@@ -1,21 +1,21 @@
 <?php
 
-namespace Passioneight\Bundle\PimcoreSteamWebApiBundle\EventSubscribers;
+namespace Passioneight\PimcoreSteamWebApi\EventSubscribers;
 
-use Passioneight\Bundle\PimcoreSteamWebApiBundle\Event\OpenId\AlreadyConnectedEvent;
-use Passioneight\Bundle\PimcoreSteamWebApiBundle\Event\OpenId\AlreadyDisconnectedEvent;
-use Passioneight\Bundle\PimcoreSteamWebApiBundle\Event\OpenId\ConnectedEvent;
-use Passioneight\Bundle\PimcoreSteamWebApiBundle\Event\OpenId\CouldNotConnectEvent;
-use Passioneight\Bundle\PimcoreSteamWebApiBundle\Event\OpenId\CouldNotDisconnectEvent;
-use Passioneight\Bundle\PimcoreSteamWebApiBundle\Event\OpenId\DisconnectedEvent;
+use Passioneight\PimcoreSteamWebApi\Event\OpenId\AlreadyConnectedEvent;
+use Passioneight\PimcoreSteamWebApi\Event\OpenId\AlreadyDisconnectedEvent;
+use Passioneight\PimcoreSteamWebApi\Event\OpenId\ConnectedEvent;
+use Passioneight\PimcoreSteamWebApi\Event\OpenId\CouldNotConnectEvent;
+use Passioneight\PimcoreSteamWebApi\Event\OpenId\CouldNotDisconnectEvent;
+use Passioneight\PimcoreSteamWebApi\Event\OpenId\DisconnectedEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 abstract class SteamOpenIdSubscriber implements EventSubscriberInterface
 {
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             ConnectedEvent::class => "onConnected",
@@ -27,33 +27,15 @@ abstract class SteamOpenIdSubscriber implements EventSubscriberInterface
         ];
     }
 
-    /**
-     * @param ConnectedEvent $event
-     */
     abstract public function onConnected(ConnectedEvent $event);
 
-    /**
-     * @param DisconnectedEvent $event
-     */
     abstract public function onDisconnected(DisconnectedEvent $event);
 
-    /**
-     * @param AlreadyConnectedEvent $event
-     */
     abstract public function onAlreadyConnected(AlreadyConnectedEvent $event);
 
-    /**
-     * @param AlreadyDisconnectedEvent $event
-     */
     abstract public function onAlreadyDisconnected(AlreadyDisconnectedEvent $event);
 
-    /**
-     * @param CouldNotConnectEvent $event
-     */
     abstract public function onCouldNotConnect(CouldNotConnectEvent $event);
 
-    /**
-     * @param CouldNotDisconnectEvent $event
-     */
     abstract public function onCouldNotDisconnect(CouldNotDisconnectEvent $event);
 }

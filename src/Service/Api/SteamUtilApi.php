@@ -1,8 +1,8 @@
 <?php
 
-namespace Passioneight\Bundle\PimcoreSteamWebApiBundle\Service\Api;
+namespace Passioneight\PimcoreSteamWebApi\Service\Api;
 
-use Passioneight\Bundle\PimcoreSteamWebApiBundle\Constant\SteamApiNamespace;
+use Passioneight\PimcoreSteamWebApi\Constant\SteamApiNamespace;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
@@ -17,6 +17,7 @@ class SteamUtilApi extends SteamWebApi
         $url = $this->createUrl(SteamApiNamespace::STEAM_WEB_API_UTIL, "GetServerInfo");
         return $this->get($url);
     }
+
     /**
      * @return ResponseInterface
      * @throws TransportExceptionInterface

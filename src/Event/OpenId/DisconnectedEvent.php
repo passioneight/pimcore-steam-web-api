@@ -1,6 +1,6 @@
 <?php
 
-namespace Passioneight\Bundle\PimcoreSteamWebApiBundle\Event\OpenId;
+namespace Passioneight\PimcoreSteamWebApi\Event\OpenId;
 
 class DisconnectedEvent extends OpenIdEvent
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace Passioneight\Bundle\PimcoreSteamWebApiBundle\Service\Api;
+namespace Passioneight\PimcoreSteamWebApi\Service\Api;
 
-use Passioneight\Bundle\PimcoreSteamWebApiBundle\Constant\SteamApiNamespace;
+use Passioneight\PimcoreSteamWebApi\Constant\SteamApiNamespace;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
@@ -16,7 +16,7 @@ class SteamPlayerServiceApi extends SteamWebApi
      */
     public function getRecentlyPlayedGames(string $steamId, array $options = []): ResponseInterface
     {
-        $options['steamid'] =  $steamId;
+        $options['steamid'] = $steamId;
         $apiOptions['query'] = $options;
 
         $url = $this->createUrl(SteamApiNamespace::STEAM_PLAYER_SERVICE, "GetRecentlyPlayedGames");
@@ -31,7 +31,7 @@ class SteamPlayerServiceApi extends SteamWebApi
      */
     public function getOwnedGames(string $steamId, array $options = []): ResponseInterface
     {
-        $options['steamid'] =  $steamId;
+        $options['steamid'] = $steamId;
         $apiOptions['query'] = $options;
 
         $url = $this->createUrl(SteamApiNamespace::STEAM_PLAYER_SERVICE, "GetOwnedGames");
@@ -46,7 +46,7 @@ class SteamPlayerServiceApi extends SteamWebApi
      */
     public function getSteamLevel(string $steamId, array $options = []): ResponseInterface
     {
-        $options['steamid'] =  $steamId;
+        $options['steamid'] = $steamId;
         $apiOptions['query'] = $options;
 
         $url = $this->createUrl(SteamApiNamespace::STEAM_PLAYER_SERVICE, "GetSteamLevel");
@@ -61,7 +61,7 @@ class SteamPlayerServiceApi extends SteamWebApi
      */
     public function getBadges(string $steamId, array $options = []): ResponseInterface
     {
-        $options['steamid'] =  $steamId;
+        $options['steamid'] = $steamId;
         $apiOptions['query'] = $options;
 
         $url = $this->createUrl(SteamApiNamespace::STEAM_PLAYER_SERVICE, "GetBadges");
@@ -76,7 +76,7 @@ class SteamPlayerServiceApi extends SteamWebApi
      */
     public function getCommunityBadgeProgress(string $steamId, array $options = []): ResponseInterface
     {
-        $options['steamid'] =  $steamId;
+        $options['steamid'] = $steamId;
         $apiOptions['query'] = $options;
 
         $url = $this->createUrl(SteamApiNamespace::STEAM_PLAYER_SERVICE, "GetCommunityBadgeProgress");
@@ -92,8 +92,8 @@ class SteamPlayerServiceApi extends SteamWebApi
      */
     public function isPlayingSharedGame(string $steamId, string $appId, array $options = []): ResponseInterface
     {
-        $options['steamid'] =  $steamId;
-        $options['appid_playing'] =  $appId;
+        $options['steamid'] = $steamId;
+        $options['appid_playing'] = $appId;
         $apiOptions['query'] = $options;
 
         $url = $this->createUrl(SteamApiNamespace::STEAM_PLAYER_SERVICE, "IsPlayingSharedGame");

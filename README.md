@@ -19,9 +19,9 @@ user to be able to link their Steam account to your website.
 
 # Why should I use this bundle?
 Steam's Web API is rather cumbersome and often outdated or a bit messy. It takes a while to fully understand how to use
-it - especially linking a Steam profile.
+it.
 
-This bundle will ease the process of fetching data from Steam comes with a pre-built data-model.
+This bundle will ease the process of fetching data from Steam.
 
 # Implemented Endpoints
 - [IPlayerService](https://partner.steamgames.com/doc/webapi/IPlayerService)

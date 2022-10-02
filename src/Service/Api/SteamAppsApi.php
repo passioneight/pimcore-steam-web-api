@@ -1,9 +1,9 @@
 <?php
 
-namespace Passioneight\Bundle\PimcoreSteamWebApiBundle\Service\Api;
+namespace Passioneight\PimcoreSteamWebApi\Service\Api;
 
 use Passioneight\Bundle\PhpUtilitiesBundle\Service\Utility\UrlUtility;
-use Passioneight\Bundle\PimcoreSteamWebApiBundle\Constant\SteamApiNamespace;
+use Passioneight\PimcoreSteamWebApi\Constant\SteamApiNamespace;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 

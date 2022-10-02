@@ -1,12 +1,13 @@
 <?php
 
-namespace Passioneight\Bundle\PimcoreSteamWebApiBundle\DependencyInjection;
+namespace Passioneight\PimcoreSteamWebApi\DependencyInjection;
 
+use Passioneight\Bundle\PhpUtilitiesBundle\Service\Utility\MethodUtility;
+use Passioneight\PimcoreSteamWebApi\Service\Configuration\SteamWebApiConfiguration;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\HttpKernel\DependencyInjection\ConfigurableExtension;
-use Passioneight\Bundle\PimcoreSteamWebApiBundle\Constant\Configuration as Config;
 
 class PimcoreSteamWebApiExtension extends ConfigurableExtension
 {
@@ -16,8 +17,8 @@ class PimcoreSteamWebApiExtension extends ConfigurableExtension
      */
     protected function loadInternal(array $mergedConfig, ContainerBuilder $container)
     {
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('config.yml');
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader->load('config.yaml');
 
         $this->populateContainer($mergedConfig, $container);
     }
@@ -29,6 +30,7 @@ class PimcoreSteamWebApiExtension extends ConfigurableExtension
      */
     public function populateContainer(array $config, ContainerBuilder $container)
     {
-        $container->setParameter(Config::ROOT, $config);
+        $serviceDefinition = $container->getDefinition(SteamWebApiConfiguration::class);
+        $serviceDefinition->addMethodCall(MethodUtility::createSetter("configuration"), [$config]);
     }
 }

@@ -1,13 +1,14 @@
 <?php
 
-namespace Passioneight\Bundle\PimcoreSteamWebApiBundle\Service\Authentication;
+namespace Passioneight\PimcoreSteamWebApi\Service\Authentication;
 
 use Passioneight\Bundle\PhpUtilitiesBundle\Service\Utility\UrlUtility;
-use Passioneight\Bundle\PimcoreSteamWebApiBundle\Constant\OpenIdMode;
-use Passioneight\Bundle\PimcoreSteamWebApiBundle\Constant\OpenIdParameter;
+use Passioneight\PimcoreSteamWebApi\Constant\OpenIdMode;
+use Passioneight\PimcoreSteamWebApi\Constant\OpenIdParameter;
 use Pimcore\Tool;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class SteamOpenId
 {
@@ -102,11 +103,10 @@ class SteamOpenId
     }
 
     /**
-     * @required
      * @internal
-     * @param RouterInterface $router
      */
-    public function setRouter(RouterInterface $router)
+    #[Required]
+    public function setRouter(RouterInterface $router): void
     {
         $this->router = $router;
     }

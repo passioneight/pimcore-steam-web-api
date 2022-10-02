@@ -1,6 +1,6 @@
 <?php
 
-namespace Passioneight\Bundle\PimcoreSteamWebApiBundle\Service\Api;
+namespace Passioneight\PimcoreSteamWebApi\Service\Api;
 
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\Request;
@@ -80,12 +80,12 @@ abstract class WebApi
     }
 
     /**
-     * @todo: switch to HttpClientInterface (currently the DI did not work for some reason)
      * @return HttpClientInterface
+     * @todo: switch to HttpClientInterface (currently the DI did not work for some reason)
      */
     protected function getClient(): HttpClientInterface
     {
-        if(!isset($this->client)) {
+        if (!isset($this->client)) {
             $this->client = HttpClient::create();
         }
 

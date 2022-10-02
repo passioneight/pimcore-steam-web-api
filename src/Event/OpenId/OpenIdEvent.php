@@ -1,6 +1,6 @@
 <?php
 
-namespace Passioneight\Bundle\PimcoreSteamWebApiBundle\Event\OpenId;
+namespace Passioneight\PimcoreSteamWebApi\Event\OpenId;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\User\UserInterface;

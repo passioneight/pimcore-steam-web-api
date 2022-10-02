@@ -1,14 +1,14 @@
 <?php
 
-namespace Passioneight\Bundle\PimcoreSteamWebApiBundle\Controller;
+namespace Passioneight\PimcoreSteamWebApi\Controller;
 
-use Passioneight\Bundle\PimcoreSteamWebApiBundle\Event\OpenId\AlreadyConnectedEvent;
-use Passioneight\Bundle\PimcoreSteamWebApiBundle\Event\OpenId\AlreadyDisconnectedEvent;
-use Passioneight\Bundle\PimcoreSteamWebApiBundle\Event\OpenId\ConnectedEvent;
-use Passioneight\Bundle\PimcoreSteamWebApiBundle\Event\OpenId\CouldNotConnectEvent;
-use Passioneight\Bundle\PimcoreSteamWebApiBundle\Event\OpenId\CouldNotDisconnectEvent;
-use Passioneight\Bundle\PimcoreSteamWebApiBundle\Event\OpenId\DisconnectedEvent;
-use Passioneight\Bundle\PimcoreSteamWebApiBundle\Service\Authentication\SteamOpenId;
+use Passioneight\PimcoreSteamWebApi\Event\OpenId\AlreadyConnectedEvent;
+use Passioneight\PimcoreSteamWebApi\Event\OpenId\AlreadyDisconnectedEvent;
+use Passioneight\PimcoreSteamWebApi\Event\OpenId\ConnectedEvent;
+use Passioneight\PimcoreSteamWebApi\Event\OpenId\CouldNotConnectEvent;
+use Passioneight\PimcoreSteamWebApi\Event\OpenId\CouldNotDisconnectEvent;
+use Passioneight\PimcoreSteamWebApi\Event\OpenId\DisconnectedEvent;
+use Passioneight\PimcoreSteamWebApi\Service\Authentication\SteamOpenId;
 use Pimcore\Controller\FrontendController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

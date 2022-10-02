@@ -1,6 +1,6 @@
 <?php
 
-namespace Passioneight\Bundle\PimcoreSteamWebApiBundle\Constant\SteamProfile;
+namespace Passioneight\PimcoreSteamWebApi\Constant\SteamProfile;
 
 use Passioneight\Bundle\PhpUtilitiesBundle\Constant\Constant;
 

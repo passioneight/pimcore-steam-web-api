@@ -1,6 +1,6 @@
 <?php
 
-namespace Passioneight\Bundle\PimcoreSteamWebApiBundle\Constant;
+namespace Passioneight\PimcoreSteamWebApi\Constant;
 
 use Passioneight\Bundle\PhpUtilitiesBundle\Constant\Constant;
 

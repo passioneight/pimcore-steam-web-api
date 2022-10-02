@@ -1,8 +1,8 @@
 <?php
 
-namespace Passioneight\Bundle\PimcoreSteamWebApiBundle\Service\Api;
+namespace Passioneight\PimcoreSteamWebApi\Service\Api;
 
-use Passioneight\Bundle\PimcoreSteamWebApiBundle\Constant\SteamApiNamespace;
+use Passioneight\PimcoreSteamWebApi\Constant\SteamApiNamespace;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
@@ -25,13 +25,12 @@ class SteamUserApi extends SteamWebApi
 
     /**
      * @param string ...$steamIds
-     * @param array $options
      * @return ResponseInterface
      * @throws TransportExceptionInterface
      */
     public function getPlayerBans(...$steamIds): ResponseInterface
     {
-        $options['steamids'] =  implode(",", $steamIds);
+        $options['steamids'] = implode(",", $steamIds);
         $apiOptions['query'] = $options;
 
         $url = $this->createUrl(SteamApiNamespace::STEAM_USER, "GetPlayerBans");
@@ -40,15 +39,14 @@ class SteamUserApi extends SteamWebApi
 
     /**
      * @param string ...$steamIds
-     * @param array $options
      * @return ResponseInterface
      * @throws TransportExceptionInterface
      */
     public function getPlayerSummaries(...$steamIds): ResponseInterface
     {
-        $options['steamids'] =  implode(",", $steamIds);
+        $options['steamids'] = implode(",", $steamIds);
         $apiOptions['query'] = $options;
-        
+
         $url = $this->createUrl(SteamApiNamespace::STEAM_USER, "GetPlayerSummaries");
         return $this->get($url, $this->addApiKey($apiOptions));
     }
@@ -61,7 +59,7 @@ class SteamUserApi extends SteamWebApi
      */
     public function getUserGroupList(string $steamId, array $options = []): ResponseInterface
     {
-        $options['steamid'] =  $steamId;
+        $options['steamid'] = $steamId;
         $apiOptions['query'] = $options;
 
         $url = $this->createUrl(SteamApiNamespace::STEAM_USER, "GetUserGroupList");
@@ -76,7 +74,7 @@ class SteamUserApi extends SteamWebApi
      */
     public function resolveVanityUrl(string $vanityName, array $options = []): ResponseInterface
     {
-        $options['vanityurl'] =  $vanityName;
+        $options['vanityurl'] = $vanityName;
         $apiOptions['query'] = $options;
 
         $url = $this->createUrl(SteamApiNamespace::STEAM_USER, "ResolveVanityURL");

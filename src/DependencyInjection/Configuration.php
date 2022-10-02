@@ -1,8 +1,8 @@
 <?php
 
-namespace Passioneight\Bundle\PimcoreSteamWebApiBundle\DependencyInjection;
+namespace Passioneight\PimcoreSteamWebApi\DependencyInjection;
 
-use Passioneight\Bundle\PimcoreSteamWebApiBundle\Constant\Configuration as Config;
+use Passioneight\PimcoreSteamWebApi\Constant\Configuration as Config;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -10,9 +10,9 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 class Configuration implements ConfigurationInterface
 {
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder(Config::ROOT);
         $rootNode = $treeBuilder->getRootNode();
